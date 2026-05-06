@@ -1,0 +1,93 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "ed3cf6b1caa632d319bdff8ceb254d53",
+    "entities": [
+      {
+        "tableName": "scheduled_alarm",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `event_instance_id` INTEGER NOT NULL, `event_title` TEXT NOT NULL, `meeting_start_utc` INTEGER NOT NULL, `alarm_fire_utc` INTEGER NOT NULL, `request_code` INTEGER NOT NULL, `state` TEXT NOT NULL, `calendar_id` INTEGER NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventInstanceId",
+            "columnName": "event_instance_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eventTitle",
+            "columnName": "event_title",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "meetingStartUtc",
+            "columnName": "meeting_start_utc",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "alarmFireUtc",
+            "columnName": "alarm_fire_utc",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "requestCode",
+            "columnName": "request_code",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "state",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "calendarId",
+            "columnName": "calendar_id",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "indices": [
+          {
+            "name": "index_scheduled_alarm_event_instance_id",
+            "unique": true,
+            "columnNames": [
+              "event_instance_id"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_scheduled_alarm_event_instance_id` ON `${TABLE_NAME}` (`event_instance_id`)"
+          },
+          {
+            "name": "index_scheduled_alarm_request_code",
+            "unique": true,
+            "columnNames": [
+              "request_code"
+            ],
+            "orders": [],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_scheduled_alarm_request_code` ON `${TABLE_NAME}` (`request_code`)"
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'ed3cf6b1caa632d319bdff8ceb254d53')"
+    ]
+  }
+}
