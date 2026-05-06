@@ -1,4 +1,4 @@
-name: Generated APK AAB (Push Github - Create Artifact To Github Action)
+name: Generated APK AAB (Create Artifact To Github Action)
 
 env:
   # The name of the main module repository
@@ -84,42 +84,3 @@ jobs:
         with:
           name: ${{ env.date_today }} - ${{ env.repository_name }} - App bundle(s) AAB release generated
           path: ${{ env.main_project_module }}/build/outputs/bundle/release/
-
-      # ======================================================
-      # Copy Build Outputs & Push to GitHub
-      # ======================================================
-
-      # Delete build/outputs directory if it already exists
-      - name: Clean up build/outputs directory
-        run: rm -rf ${{ env.build_output_path }}
-
-      # Create build/outputs directory if it doesn't exist
-      - name: Create build/outputs directory
-        run: mkdir -p ${{ env.build_output_path }}
-
-      # Copy APK Debug to build/outputs
-      - name: Copy APK Debug to build/outputs
-        run: |
-          cp -r ${{ env.main_project_module }}/build/outputs/apk/debug/* ${{ env.build_output_path }}/ 2>/dev/null || echo "No APK debug files found"
-
-      # Copy APK Release to build/outputs
-      - name: Copy APK Release to build/outputs
-        run: |
-          cp -r ${{ env.main_project_module }}/build/outputs/apk/release/* ${{ env.build_output_path }}/ 2>/dev/null || echo "No APK release files found"
-
-      # Copy AAB Release to build/outputs
-      - name: Copy AAB Release to build/outputs
-        run: |
-          cp -r ${{ env.main_project_module }}/build/outputs/bundle/release/* ${{ env.build_output_path }}/ 2>/dev/null || echo "No AAB release files found"
-
-      # List copied files for verification
-      - name: List build/outputs contents
-        run: ls -la ${{ env.build_output_path }}/
-
-      # Commit and Push to GitHub
-      - name: Commit & Push build outputs to GitHub
-        run: |
-          git config user.name '${{ github.actor }}'
-          git config user.email '${{ github.actor }}@users.noreply.github.com'
-          git add ${{ env.build_output_path }}/ -f
-          git diff --cached --quiet && echo "No changes to commit" || (git commit -m "ci: upload build outputs - ${{ env.date_today }} [skip ci]" && git push)
